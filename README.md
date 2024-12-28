@@ -11,3 +11,11 @@ This project is to create a Blog web application using Node.js, Express.js, and 
 3. Post Update/Delete: Users should be edit and delete posts as needed.
 
 3. Styling: The application should be well-styled and responsive, ensuring a good user experience on both desktop and mobile devices.
+
+#How to run
+
+1.Clone the repo
+2.Run "npm init"
+3.Rum "npm i ejs"
+4.Rum "npm i express"
+5.Rum "npm i body-parser"
