@@ -2,24 +2,24 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f8ff; /* Light blue background */
-    color: #333; /* Dark text for contrast */
+    background-color: #f0f8ff; 
+    color: #333; 
 }
 
 h1 {
     text-align: center;
-    color: #003366; /* Deep blue for titles */
+    color: #003366; 
     margin: 20px 0;
 }
 
 main {
     padding: 20px;
+    margin-bottom: 30px;
 }
 
 footer {
-    background-color: #003366; /* Deep blue footer */
-    color: #ffffff; /* White text for contrast */
-    padding: 10px 20px;
+    background-color: #003366; 
+    color: #ffffff; 
     text-align: center;
     width: 100%;
     bottom: 0;
@@ -27,20 +27,24 @@ footer {
 }
 
 .post {
-    margin: 20px;
+    margin: 10px;
     padding: 20px;
-    border: 1px solid #007acc; /* Blue border */
+    border: 1px solid #007acc; 
     border-radius: 5px;
-    background-color: #e6f2ff; /* Light blue post background */
-    color: #003366; /* Deep blue text */
+    background-color: #e6f2ff; 
+    color: #003366; 
+}
+
+.create{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 form {
-    margin: 10px 0;
     padding: 10px;
-    background-color: #f0f8ff; /* Form background */
+    background-color: #f0f8ff; 
     border-radius: 5px;
-    border: 1px solid #007acc;
 }
 
 label {
@@ -64,7 +68,7 @@ textarea {
 input[type="submit"],
 input[type="reset"],
 button {
-    background-color: #007acc; /* Blue button background */
+    background-color: #007acc; 
     color: #ffffff;
     padding: 10px 20px;
     border: none;
@@ -76,16 +80,16 @@ button {
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 button:hover {
-    background-color: #005f99; /* Darker blue on hover */
+    background-color: #005f99; 
 }
 
 #delete {
-    background-color: #f44336; /* Red for delete */
+    background-color: #f44336; 
     color: #ffffff;
 }
 
 #delete:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+    background-color: #d32f2f; 
 }
 
 input[type="hidden"] {
@@ -109,4 +113,8 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+.buttons{
+    display: flex;
 }

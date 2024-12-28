@@ -2,9 +2,9 @@
 
 <h1>Blog app</h1>
 
-<form method="post" action="/create">
+<form method="post" action="/create" class="create">
     <input type="submit" value="Create a new post">
-</form> 
+</form>
 
 <% if(locals.title && locals.content){ %>
     <% for(let i = 0; i < locals.title.length; i++) { %>
@@ -13,16 +13,18 @@
             <p><%= locals.content[i] %></p>
         </div>
 
-        <form action="/edit" method="post">
-            <input type="hidden" name="title" value="<%= locals.title[i] %>">
-            <input type="hidden" name="content" value="<%= locals.content[i] %>">
-            <input type="hidden" name="index" value="<%= i %>">
-            <input type="submit" value="Edit">
-        </form>
-        <form action="/submit" method="post">
-            <input type="hidden" name="index" value="<%= i %>">
-            <input type="submit" name="mode" value="Delete" id="delete">
-        </form>
+        <div class="buttons">
+            <form action="/edit" method="post">
+                <input type="hidden" name="title" value="<%= locals.title[i] %>">
+                <input type="hidden" name="content" value="<%= locals.content[i] %>">
+                <input type="hidden" name="index" value="<%= i %>">
+                <input type="submit" value="Edit">
+            </form>
+            <form action="/submit" method="post">
+                <input type="hidden" name="index" value="<%= i %>">
+                <input type="submit" name="mode" value="Delete" id="delete">
+            </form>
+        </div>
         <br>
     <% } %>
 <% } %>
