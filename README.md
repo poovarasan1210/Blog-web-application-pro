@@ -14,8 +14,16 @@ This project is to create a Blog web application using Node.js, Express.js, and 
 
 #How to run
 
-1.Clone the repo
-2.Run "npm init"
-3.Rum "npm i ejs"
-4.Rum "npm i express"
-5.Rum "npm i body-parser"
+1.Clone the repo.
+
+2.Run "npm init".
+
+3.Rum "npm i ejs".
+
+4.Rum "npm i express".
+
+5.Rum "npm i body-parser".
+
+6.Rum "node index.js"
+
+7.In your browser type "localhost:3000/" and you are good to gooo.
