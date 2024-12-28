@@ -1,0 +1,30 @@
+<%- include('partials/header.ejs') %>
+
+<h1>Blog app</h1>
+
+<form method="post" action="/create">
+    <input type="submit" value="Create a new post">
+</form> 
+
+<% if(locals.title && locals.content){ %>
+    <% for(let i = 0; i < locals.title.length; i++) { %>
+        <div class="post">
+            <h2><%= locals.title[i] %></h2>
+            <p><%= locals.content[i] %></p>
+        </div>
+
+        <form action="/edit" method="post">
+            <input type="hidden" name="title" value="<%= locals.title[i] %>">
+            <input type="hidden" name="content" value="<%= locals.content[i] %>">
+            <input type="hidden" name="index" value="<%= i %>">
+            <input type="submit" value="Edit">
+        </form>
+        <form action="/submit" method="post">
+            <input type="hidden" name="index" value="<%= i %>">
+            <input type="submit" name="mode" value="Delete" id="delete">
+        </form>
+        <br>
+    <% } %>
+<% } %>
+
+<%- include('partials/footer.ejs') %>

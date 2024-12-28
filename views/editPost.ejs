@@ -1,0 +1,13 @@
+<%- include('partials/header.ejs') %>
+
+<form method="post" action="/submit">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" value="<%= locals.title %>">
+    <label for="content">Content</label>
+    <textarea id="content" name="content"> <%= locals.content %> </textarea>
+    <input type="hidden" name="index" value="<%= locals.index %>">
+    <input type="reset" value="Reset">
+    <input type="submit" name="mode" value="Submit">
+</form>
+
+<%- include('partials/footer.ejs') %>
