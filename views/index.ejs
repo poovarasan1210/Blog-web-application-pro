@@ -1,6 +1,6 @@
 <%- include('partials/header.ejs') %>
 
-<h1>Blog app</h1>
+<h1 class="heading">Blog app</h1>
 
 <form method="post" action="/create" class="create">
     <input type="submit" value="Create a new post">
@@ -11,6 +11,7 @@
         <div class="post">
             <h2><%= locals.title[i] %></h2>
             <p><%= locals.content[i] %></p>
+            <p class="date"><%= new Date().toLocaleString() %></p>
         </div>
 
         <div class="buttons">

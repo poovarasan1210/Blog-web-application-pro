@@ -15,6 +15,9 @@ h1 {
 main {
     padding: 20px;
     margin-bottom: 30px;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
 footer {
@@ -117,4 +120,10 @@ a:hover {
 
 .buttons{
     display: flex;
+}
+
+.date{
+    font-size: 0.8em;
+    color: #666;
+    text-align: right;
 }
