@@ -12,6 +12,8 @@ This project is to create a Blog web application using Node.js, Express.js, and 
 
 3. Styling: The application should be well-styled and responsive, ensuring a good user experience on both desktop and mobile devices.
 
+#Running on render: https://blog-web-application-8gda.onrender.com/
+
 #How to run
 
 1.Clone the repo.
