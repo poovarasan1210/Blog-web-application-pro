@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -38,6 +38,6 @@ app.post('/edit', (req, res) => {
     res.render('editPost.ejs', { title: title, content: content, index: req.body.index });
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${port}`);
 });
