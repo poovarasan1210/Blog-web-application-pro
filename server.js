@@ -28,8 +28,6 @@ db.query(createTableQuery)
     .then(() => console.log("Table 'blogs' is ready"))
     .catch(err => console.error("Error creating table", err));
 
-db.query("alter table blogs alter column date type varchar using date::varchar");
-
 var blogs = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
