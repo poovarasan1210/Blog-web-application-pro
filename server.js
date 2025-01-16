@@ -1,10 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import env from 'dotenv';
 import pkg from 'pg';
 const { Client } = pkg;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+env.config();
 
 const db = new Client({
     connectionString: process.env.DATABASE_URL,
