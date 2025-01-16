@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { Client } from 'pg';
+import pkg from 'pg';
+const { Client } = pkg;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
