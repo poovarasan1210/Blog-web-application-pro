@@ -14,6 +14,20 @@ const db = new pg.Client({
 });
 db.connect();
 
+const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS blogs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        author VARCHAR(255) NOT NULL,
+        date TIMESTAMP NOT NULL
+    )
+`;
+
+db.query(createTableQuery)
+    .then(() => console.log("Table 'blogs' is ready"))
+    .catch(err => console.error("Error creating table", err));
+
 var blogs = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
