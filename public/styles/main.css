@@ -125,5 +125,9 @@ a:hover {
 .date{
     font-size: 0.8em;
     color: #666;
-    text-align: right;
+}
+
+.author{
+    font-size: 1em;
+    color: #353535;
 }

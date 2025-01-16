@@ -7,7 +7,9 @@
     <input type="text" id="title" name="title" value="<%= locals.title %>" required>
     <label for="content">Content</label>
     <textarea id="content" name="content" required> <%= locals.content %> </textarea>
-    <input type="hidden" name="index" value="<%= locals.index %>">
+    <label for="author">Author</label>
+    <input type="text" id="author" name="author" value="<%= locals.author %>" required>
+    <input type="hidden" name="id" value="<%= locals.id %>">
     <input type="reset" value="Reset">
     <input type="submit" name="mode" value="Submit">
 </form>

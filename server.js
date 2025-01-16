@@ -1,41 +1,76 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import pg from 'pg';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const db = new pg.Client({
+    user: "blog_mlc0_user",
+    host: "dpg-cu4a0hl2ng1s738e49i0-a",
+    database: "blog_mlc0",
+    password: "S38TcvO4Rn9ZRZqSysLHt1elRtt6GyAY",
+    port: 5432,
+});
+db.connect();
+
+var blogs = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-    res.render('index.ejs');
-});
+app.get('/', async (req, res) => {
+    try{
+        const result = await db.query("select * from blogs order by id asc");
+        blogs = result.rows;
 
-app.post('/create', (req, res) => {
-    res.render('createPost.ejs');
-});
-
-var title = [];
-var content = [];
-app.post('/submit', (req, res) => {
-    if(req.body.mode == 'Delete' && req.body.index != null){
-        title.splice(req.body.index, 1);
-        content.splice(req.body.index, 1);
+        res.render('index.ejs', {
+            bgs: blogs
+        });
     }
-    else if(req.body.mode == 'Submit' && req.body.index != null){
-        title[req.body.index] = req.body.title;
-        content[req.body.index] = req.body.content;
+    catch(err){
+        console.log(err);
+    }
+});
+
+app.post('/create', async (req, res) => {
+    try {
+        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, req.body.author, new Date()]);
+        res.redirect("/");
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post('/submit', async (req, res) => {
+    if(req.body.mode == 'Delete'){
+        try {
+            await db.query("DELETE FROM blogs WHERE id = $1", [req.body.id]);
+            res.redirect("/");
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    else if(req.body.mode == 'Submit'){
+        console.log(req.body);
+        try {
+            await db.query("UPDATE blogs SET title = ($1) WHERE id = $2", [req.body.title, req.body.id]);
+            await db.query("UPDATE blogs SET content = ($1) WHERE id = $2", [req.body.content, req.body.id]);
+            await db.query("UPDATE blogs SET author = ($1) WHERE id = $2", [req.body.author, req.body.id]);
+            await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [new Date(), req.body.id]);
+            res.redirect("/");
+        } catch (err) {
+            console.log(err);
+        }
     }
     else{
-        title.push(req.body.title);
-        content.push(req.body.content);
+        res.render('createPost.ejs');
     }
-    res.render('index.ejs', { title: title, content: content });
 });
 
 app.post('/edit', (req, res) => {
-    res.render('editPost.ejs', { title: title, content: content, index: req.body.index });
+    res.render('editPost.ejs', { title: req.body.title, content: req.body.content, author: req.body.author, id: req.body.id });
 });
 
 app.listen(PORT, () => {
