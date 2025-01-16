@@ -20,13 +20,15 @@ const createTableQuery = `
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
         author VARCHAR(255) NOT NULL,
-        date TIMESTAMP NOT NULL
+        date VARCHAR(50) NOT NULL
     )
 `;
 
 db.query(createTableQuery)
     .then(() => console.log("Table 'blogs' is ready"))
     .catch(err => console.error("Error creating table", err));
+
+db.query("alter table blogs alter column date type varchar using date::varchar");
 
 var blogs = [];
 
