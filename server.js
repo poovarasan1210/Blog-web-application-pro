@@ -50,7 +50,9 @@ app.get('/', async (req, res) => {
 
 app.post('/create', async (req, res) => {
     try {
-        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, req.body.author, new Date()]);
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
+        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, req.body.author, formattedDate]);
         res.redirect("/");
     } catch (err) {
         console.log(err);
@@ -72,7 +74,9 @@ app.post('/submit', async (req, res) => {
             await db.query("UPDATE blogs SET title = ($1) WHERE id = $2", [req.body.title, req.body.id]);
             await db.query("UPDATE blogs SET content = ($1) WHERE id = $2", [req.body.content, req.body.id]);
             await db.query("UPDATE blogs SET author = ($1) WHERE id = $2", [req.body.author, req.body.id]);
-            await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [new Date(), req.body.id]);
+            const currentDate = new Date();
+            const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
+            await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [formattedDate, req.body.id]);
             res.redirect("/");
         } catch (err) {
             console.log(err);
