@@ -11,6 +11,7 @@ const { Client } = pkg;
 const app = express();
 const PORT = process.env.PORT || 3000;
 const saltRounds = 10;
+var user_name = '';
 env.config();
 
 app.use(
@@ -27,20 +28,20 @@ app.use(express.static('public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const db = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    }
-});
 // const db = new Client({
-//     user: process.env.DB_USER,
-//     host: process.env.DB_HOST,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT,
-//     ssl: false  // Explicitly disable SSL
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false,
+//     }
 // });
+const db = new Client({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: false
+});
 db.connect();
 
 var blogs = [];
@@ -52,7 +53,7 @@ app.get("/", (req, res) => {
 app.get('/home', async (req, res) => {
     try{
         if (req.isAuthenticated()) {
-            const result = await db.query("select * from blogs order by id asc");
+            const result = await db.query("select * from blogs order by id desc");
             blogs = result.rows;
 
             res.render('home.ejs', {
@@ -71,7 +72,8 @@ app.get('/home', async (req, res) => {
 app.get('/myBlogs', async (req, res) => {
     try{
         if (req.isAuthenticated()) {
-            const result = await db.query("select * from blogs order by id asc");
+            const result = await db.query("select * from blogs where author = $1 order by id desc", [user_name]);
+            // const result = await db.query("select * from blogs order by id asc");
             blogs = result.rows;
 
             res.render('myBlogs.ejs', {
@@ -104,8 +106,8 @@ app.post('/create', async (req, res) => {
     try {
         const currentDate = new Date();
         const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
-        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, req.body.author, formattedDate]);
-        res.redirect("/");
+        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, user_name, formattedDate]);
+        res.redirect("/myBlogs");
     } catch (err) {
         console.log(err);
     }
@@ -115,7 +117,7 @@ app.post('/submit', async (req, res) => {
     if(req.body.mode == 'Delete'){
         try {
             await db.query("DELETE FROM blogs WHERE id = $1", [req.body.id]);
-            res.redirect("/");
+            res.redirect("/myBlogs");
         } catch (err) {
             console.log(err);
         }
@@ -125,7 +127,7 @@ app.post('/submit', async (req, res) => {
         try {
             await db.query("UPDATE blogs SET title = ($1) WHERE id = $2", [req.body.title, req.body.id]);
             await db.query("UPDATE blogs SET content = ($1) WHERE id = $2", [req.body.content, req.body.id]);
-            await db.query("UPDATE blogs SET author = ($1) WHERE id = $2", [req.body.author, req.body.id]);
+            // await db.query("UPDATE blogs SET author = ($1) WHERE id = $2", [req.body.author, req.body.id]);
             const currentDate = new Date();
             const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
             await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [formattedDate, req.body.id]);
@@ -140,7 +142,7 @@ app.post('/submit', async (req, res) => {
 });
 
 app.post('/edit', (req, res) => {
-    res.render('editPost.ejs', { title: req.body.title, content: req.body.content, author: req.body.author, id: req.body.id });
+    res.render('editPost.ejs', { title: req.body.title, content: req.body.content, id: req.body.id });
 });
 
 app.post(
@@ -159,9 +161,12 @@ app.get("/register", (req, res) => {
 app.post("/register", async (req, res) => {
     const email = req.body.username;
     const password = req.body.password;
+    const name = req.body.name;
+    user_name = name;
+    console.log("User: "+user_name);
   
     try {
-      const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [
+      const checkResult = await db.query("SELECT * FROM user_table WHERE email = $1", [
         email,
       ]);
   
@@ -173,8 +178,8 @@ app.post("/register", async (req, res) => {
             console.error("Error hashing password:", err);
           } else {
             const result = await db.query(
-              "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
-              [email, hash]
+              "INSERT INTO user_table(username, email, password) VALUES ($1, $2, $3) RETURNING *",
+              [name, email, hash]
             );
             const user = result.rows[0];
             req.login(user, (err) => {
@@ -192,10 +197,11 @@ app.post("/register", async (req, res) => {
 passport.use(
     new Strategy(async function verify(username, password, cb) {
       try {
-        const result = await db.query("SELECT * FROM users WHERE email = $1 ", [
+        const result = await db.query("SELECT * FROM user_table WHERE email = $1 ", [
           username,
         ]);
         if (result.rows.length > 0) {
+            console.log("email: "+username);
           const user = result.rows[0];
           const storedHashedPassword = user.password;
           bcrypt.compare(password, storedHashedPassword, (err, valid) => {
@@ -206,6 +212,8 @@ passport.use(
             } else {
               if (valid) {
                 //Passed password check
+                user_name = user.username;
+                console.log("User: "+user.username);
                 return cb(null, user);
               } else {
                 //Did not pass password check
