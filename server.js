@@ -43,6 +43,31 @@ const db = new Client({
 // });
 db.connect();
 
+const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS blogs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        author VARCHAR(255) NOT NULL,
+        date VARCHAR(50) NOT NULL
+    )
+`;
+
+db.query(createTableQuery)
+    .then(() => console.log("Table 'blogs' is ready"))
+    .catch(err => console.error("Error creating table", err));
+
+const createUserTableQuery = `
+    CREATE TABLE IF NOT EXISTS users (
+        email VARCHAR(50) NOT NULL,
+        password VARCHAR(200) NOT NULL
+    )
+`;
+
+db.query(createUserTableQuery)
+    .then(() => console.log("Table 'users' is ready"))
+    .catch(err => console.error("Error creating table", err));
+
 var blogs = [];
 
 app.get("/", (req, res) => {
