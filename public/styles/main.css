@@ -131,3 +131,35 @@ a:hover {
     font-size: 1em;
     color: #353535;
 }
+
+
+.centered {
+    padding-top: 200px;
+    text-align: center;
+}
+
+.secret-text {
+  text-align: center;
+  font-size: 2rem;
+  color: #fff;
+  background-color: #000;
+}
+
+.verify_redirection {
+    all: unset;
+    color: red;
+}
+
+.verify_redirection:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: #f0f8ff;
+}
+
+.form_submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
