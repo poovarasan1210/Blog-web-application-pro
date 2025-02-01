@@ -27,46 +27,21 @@ app.use(express.static('public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const db = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    }
-});
 // const db = new Client({
-//     user: process.env.DB_USER,
-//     host: process.env.DB_HOST,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT,
-//     ssl: false  // Explicitly disable SSL
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false,
+//     }
 // });
+const db = new Client({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: false  // Explicitly disable SSL
+});
 db.connect();
-
-const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS blogs (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        content TEXT NOT NULL,
-        author VARCHAR(255) NOT NULL,
-        date VARCHAR(50) NOT NULL
-    )
-`;
-
-db.query(createTableQuery)
-    .then(() => console.log("Table 'blogs' is ready"))
-    .catch(err => console.error("Error creating table", err));
-
-const createUserTableQuery = `
-    CREATE TABLE IF NOT EXISTS users (
-        email VARCHAR(50) NOT NULL,
-        password VARCHAR(200) NOT NULL
-    )
-`;
-
-db.query(createUserTableQuery)
-    .then(() => console.log("Table 'users' is ready"))
-    .catch(err => console.error("Error creating table", err));
 
 var blogs = [];
 
@@ -80,8 +55,28 @@ app.get('/home', async (req, res) => {
             const result = await db.query("select * from blogs order by id asc");
             blogs = result.rows;
 
-            res.render('index.ejs', {
-                bgs: blogs
+            res.render('home.ejs', {
+                bgs: blogs,
+                currentPage: 'home'
+            });
+        } else {
+            res.redirect("/login");
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+});
+
+app.get('/myBlogs', async (req, res) => {
+    try{
+        if (req.isAuthenticated()) {
+            const result = await db.query("select * from blogs order by id asc");
+            blogs = result.rows;
+
+            res.render('myBlogs.ejs', {
+                bgs: blogs,
+                currentPage: 'myBlogs'
             });
         } else {
             res.redirect("/login");

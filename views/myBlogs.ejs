@@ -1,6 +1,12 @@
 <%- include('partials/header.ejs') %>
 
-<h1 class="heading">Blog app</h1>
+<div class="menu_body">
+
+    <%- include('partials/menu.ejs') %>
+
+<div class="right">
+
+<h1 class="heading">My Blogs</h1>
 
 <form method="post" action="/submit" class="create">
     <input type="submit" value="Create a new post">
@@ -29,5 +35,8 @@
     </div>
     <br>
 <% } %>
+
+</div>
+</div>
 
 <%- include('partials/footer.ejs') %>

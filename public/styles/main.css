@@ -13,11 +13,18 @@ h1 {
 }
 
 main {
-    padding: 20px;
     margin-bottom: 30px;
-    width: 60%;
-    margin-left: 20%;
-    margin-right: 20%;
+}
+
+.menu_body {
+    margin-left: 10px;
+}
+
+#web_name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
 
 footer {
@@ -27,6 +34,7 @@ footer {
     width: 100%;
     bottom: 0;
     position: fixed;
+    padding-top: 20px;
 }
 
 .post {
@@ -42,6 +50,8 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: sticky;
+    top: 0;
 }
 
 form {
@@ -58,6 +68,8 @@ label {
 }
 
 input[type="text"],
+input[type="email"],
+input[type="password"],
 textarea {
     width: 100%;
     padding: 10px;
@@ -156,10 +168,23 @@ a:hover {
     background-color: #f0f8ff;
 }
 
-.form_submit {
+.row {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 15px;
+}
+
+.container {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu_body{
+    display: flex;
 }
