@@ -30,7 +30,7 @@ app.use(passport.session());
 const db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
     }
 });
 // const db = new Client({
