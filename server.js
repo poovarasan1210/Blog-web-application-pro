@@ -58,7 +58,8 @@ app.get('/home', async (req, res) => {
 
             res.render('home.ejs', {
                 bgs: blogs,
-                currentPage: 'home'
+                currentPage: 'home',
+                profile_name: user_name
             });
         } else {
             res.redirect("/login");
@@ -77,7 +78,8 @@ app.get('/myBlogs', async (req, res) => {
 
             res.render('myBlogs.ejs', {
                 bgs: blogs,
-                currentPage: 'myBlogs'
+                currentPage: 'myBlogs',
+                profile_name: user_name
             });
         } else {
             res.redirect("/login");
