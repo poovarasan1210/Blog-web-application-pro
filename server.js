@@ -28,20 +28,20 @@ app.use(express.static('public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// const db = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//         rejectUnauthorized: false,
-//     }
-// });
 const db = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-    ssl: false
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    }
 });
+// const db = new Client({
+//     user: process.env.DB_USER,
+//     host: process.env.DB_HOST,
+//     database: process.env.DB_NAME,
+//     password: process.env.DB_PASSWORD,
+//     port: process.env.DB_PORT,
+//     ssl: false
+// });
 db.connect();
 
 var blogs = [];
@@ -73,7 +73,6 @@ app.get('/myBlogs', async (req, res) => {
     try{
         if (req.isAuthenticated()) {
             const result = await db.query("select * from blogs where author = $1 order by id desc", [user_name]);
-            // const result = await db.query("select * from blogs order by id asc");
             blogs = result.rows;
 
             res.render('myBlogs.ejs', {
@@ -127,7 +126,6 @@ app.post('/submit', async (req, res) => {
         try {
             await db.query("UPDATE blogs SET title = ($1) WHERE id = $2", [req.body.title, req.body.id]);
             await db.query("UPDATE blogs SET content = ($1) WHERE id = $2", [req.body.content, req.body.id]);
-            // await db.query("UPDATE blogs SET author = ($1) WHERE id = $2", [req.body.author, req.body.id]);
             const currentDate = new Date();
             const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
             await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [formattedDate, req.body.id]);
