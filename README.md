@@ -1,6 +1,6 @@
 # Blog-web-application
 
-This project is to create a Blog web application using Node.js, Express.js, and EJS. The application will allow users to create and view blog posts. Posts will not persist between sessions as no database will be used in this version of the application. 
+The Blog Application is a full-stack web app that lets users create, edit, and delete blog posts. It showcases the use of Node.js, Express.js, EJS templating for the backend, and HTML, CSS, JavaScript for the frontend. The app now integrates with PostgreSQL for persistent blog data storage. 
 
 #Features
 
