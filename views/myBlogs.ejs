@@ -2,41 +2,40 @@
 
 <div class="menu_body">
 
-    <%- include('partials/menu.ejs') %>
-
-<div class="right">
-
-<h1 class="heading">My Blogs</h1>
-
-<form method="post" action="/submit" class="create">
-    <input type="submit" value="Create a new post">
-</form>
-
-<% for(let blog of bgs){%>
-    <div class="post">
-        <h2><%= blog.title%></h2>
-        <p style="text-align: justify;"><%= blog.content %></p>
-        <p class="author"><%= blog.author %></p>
-        <p class="date"><%= blog.date %></p>
+    <div class="left">
+        <%- include('partials/menu.ejs') %>
     </div>
 
-    <div class="buttons">
-        <form action="/edit" method="post">
-            <input type="hidden" name="title" value="<%= blog.title %>">
-            <input type="hidden" name="content" value="<%= blog.content %>">
-            <input type="hidden" name="author" value="<%= blog.author %>">
-            <input type="hidden" name="id" value="<%= blog.id %>">
-            <input type="submit" value="Edit">
+    <div class="right">
+        <h1 class="heading">My Blogs</h1>
+        <form method="post" action="/submit" class="create">
+            <input type="submit" value="Create a new post">
         </form>
-        <form action="/submit" method="post">
-            <input type="hidden" name="id" value="<%= blog.id %>">
-            <input type="submit" name="mode" value="Delete" id="delete">
-        </form>
-    </div>
-    <br>
-<% } %>
 
-</div>
+        <% for(let blog of bgs){%>
+            <div class="post">
+                <h2><%= blog.title%></h2>
+                <p style="text-align: justify;"><%= blog.content %></p>
+                <p class="author"><%= blog.author %></p>
+                <p class="date"><%= blog.date %></p>
+            </div>
+
+            <div class="buttons">
+                <form action="/edit" method="post">
+                    <input type="hidden" name="title" value="<%= blog.title %>">
+                    <input type="hidden" name="content" value="<%= blog.content %>">
+                    <input type="hidden" name="author" value="<%= blog.author %>">
+                    <input type="hidden" name="id" value="<%= blog.id %>">
+                    <input type="submit" value="Edit">
+                </form>
+                <form action="/submit" method="post">
+                    <input type="hidden" name="id" value="<%= blog.id %>">
+                    <input type="submit" name="mode" value="Delete" id="delete">
+                </form>
+            </div>
+            <br>
+        <% } %>
+    </div>
 </div>
 
 <%- include('partials/footer.ejs') %>

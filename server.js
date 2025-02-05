@@ -11,7 +11,6 @@ const { Client } = pkg;
 const app = express();
 const PORT = process.env.PORT || 3000;
 const saltRounds = 10;
-var user_name = '';
 env.config();
 
 app.use(
@@ -28,20 +27,20 @@ app.use(express.static('public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const db = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    }
-});
 // const db = new Client({
-//     user: process.env.DB_USER,
-//     host: process.env.DB_HOST,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT,
-//     ssl: false
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false,
+//     }
 // });
+const db = new Client({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: false
+});
 db.connect();
 
 var blogs = [];
@@ -162,8 +161,6 @@ app.post("/register", async (req, res) => {
     const email = req.body.username;
     const password = req.body.password;
     const name = req.body.name;
-    user_name = name;
-    console.log("User: "+user_name);
   
     try {
       const checkResult = await db.query("SELECT * FROM user_table WHERE email = $1", [
@@ -212,7 +209,6 @@ passport.use(
             } else {
               if (valid) {
                 //Passed password check
-                user_name = user.username;
                 console.log("User: "+user.username);
                 return cb(null, user);
               } else {
