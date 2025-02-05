@@ -58,7 +58,7 @@ app.get('/home', async (req, res) => {
             res.render('home.ejs', {
                 bgs: blogs,
                 currentPage: 'home',
-                profile_name: user_name
+                profile_name: req.user.username
             });
         } else {
             res.redirect("/login");
@@ -72,13 +72,13 @@ app.get('/home', async (req, res) => {
 app.get('/myBlogs', async (req, res) => {
     try{
         if (req.isAuthenticated()) {
-            const result = await db.query("select * from blogs where author = $1 order by id desc", [user_name]);
+            const result = await db.query("SELECT * FROM blogs WHERE author = $1 ORDER BY id DESC", [req.user.username]);
             blogs = result.rows;
 
             res.render('myBlogs.ejs', {
                 bgs: blogs,
                 currentPage: 'myBlogs',
-                profile_name: user_name
+                profile_name: req.user.username
             });
         } else {
             res.redirect("/login");
@@ -106,7 +106,7 @@ app.post('/create', async (req, res) => {
     try {
         const currentDate = new Date();
         const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
-        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, user_name, formattedDate]);
+        await db.query("INSERT INTO blogs (title, content, author, date) VALUES ($1, $2, $3, $4)", [req.body.title, req.body.content, req.body.username, formattedDate]);
         res.redirect("/myBlogs");
     } catch (err) {
         console.log(err);
@@ -127,9 +127,9 @@ app.post('/submit', async (req, res) => {
         try {
             await db.query("UPDATE blogs SET title = ($1) WHERE id = $2", [req.body.title, req.body.id]);
             await db.query("UPDATE blogs SET content = ($1) WHERE id = $2", [req.body.content, req.body.id]);
-            const currentDate = new Date();
-            const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
-            await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [formattedDate, req.body.id]);
+            // const currentDate = new Date();
+            // const formattedDate = currentDate.toISOString().slice(0, 19).replace("T", " ");
+            // await db.query("UPDATE blogs SET date = ($1) WHERE id = $2", [formattedDate, req.body.id]);
             res.redirect("/");
         } catch (err) {
             console.log(err);
