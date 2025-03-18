@@ -45,6 +45,8 @@ db.connect();
 
 var blogs = [];
 
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 app.get("/", (req, res) => {
     res.redirect("/home");
 });
